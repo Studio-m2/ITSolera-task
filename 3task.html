@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Card Fraud Detection</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    .card-form {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-control {
+      margin-bottom: 15px;
+    }
+    .fraud-alert {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-form">
+    <h4 class="text-center">Credit Card Payment</h4>
+    <form id="paymentForm">
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number" required>
+      </div>
+      <div class="form-group">
+        <label for="cardName">Name on Card</label>
+        <input type="text" class="form-control" id="cardName" placeholder="Enter name" required>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label for="expiryDate">Expiration Date</label>
+          <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+        </div>
+        <div class="col">
+          <label for="cvv">CVV</label>
+          <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block mt-4">Submit</button>
+      <div class="fraud-alert" id="fraudAlert">Fraud detected: Invalid card number</div>
+    </form>
+	
+	
+		 <p>task1 url <a href="index.html">task1</a></p>
+		<p>task2 url <a href="2nd.html">task2</a></p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get form values
+      const cardNumber = document.getElementById('cardNumber').value;
+      const cardName = document.getElementById('cardName').value;
+      const expiryDate = document.getElementById('expiryDate').value;
+      const cvv = document.getElementById('cvv').value;
+
+      // Validate card number using Luhn algorithm
+      if (!validateCardNumber(cardNumber)) {
+        document.getElementById('fraudAlert').style.display = 'block';
+      } else {
+        document.getElementById('fraudAlert').style.display = 'none';
+        alert('Payment submitted successfully!');
+        // Here you would typically send the data to your backend for further fraud detection
+      }
+    });
+
+    // Luhn Algorithm for Credit Card Validation
+    function validateCardNumber(cardNumber) {
+      let sum = 0;
+      let shouldDouble = false;
+
+      // Loop through card digits in reverse
+      for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber[i]);
+
+        if (shouldDouble) {
+          digit *= 2;
+          if (digit > 9) {
+            digit -= 9;
+          }
+        }
+
+        sum += digit;
+        shouldDouble = !shouldDouble;
+      }
+
+      // Card is valid if sum is divisible by 10
+      return sum % 10 === 0;
+    }
+  </script>
+
+</body>
+</html>
